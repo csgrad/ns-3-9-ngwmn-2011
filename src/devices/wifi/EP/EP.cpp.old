@@ -1,0 +1,152 @@
+#define PROUNDS 10
+#define POPSIZE 10
+#define MATING_EVENTS 5
+#define MAXMUT 3
+//#define VERBOSE 1
+
+#include "epaut.cpp"
+#include <stdio.h>
+#include <cstdlib>
+
+using namespace std;
+
+epaut inuse;
+epaut *population;
+double *fitness;
+int countoff;
+double *current;
+double *previous;
+
+void mutate(epaut aut){
+	switch(lrand48()%5){
+		case 0:aut.mutout();break;
+		case 1:aut.muttrn();break;
+		case 2:aut.mutfst();break;
+		case 3:aut.mutadd();break;
+		case 4:aut.mutdel();break;
+		default:aut.mutout();aut.muttrn();aut.mutfst();break;
+	}
+}
+
+void initEP(){
+int i;
+countoff = 0;
+
+//initalize population
+
+fitness = new double[POPSIZE];
+population = new epaut[POPSIZE];
+for(i=0;i<POPSIZE;i++){
+population[i].create(Nmax/2);
+fitness[i]=0.0;
+}
+inuse=population[lrand48()%POPSIZE];
+
+//setup
+previous = new double[PROUNDS+1];
+current = new double[PROUNDS+1];
+for(i=0;i<=PROUNDS;i++){
+previous[i]=0.0;
+current[i]=0.0;
+}
+
+}
+
+/*
+output = 0 if lower
+         1 if rise to alpha
+*/
+int predict(double change){
+	int i,j;
+	int best;
+	double bestfit;
+	double *temp;
+	epaut child;
+	double fit;
+
+	for(i=0;i<MATING_EVENTS;i++){
+		//the child is created by one of the parrent objects
+		child = population[lrand48()%POPSIZE];
+		for(j=0;j<(lrand48()%MAXMUT)+1;j++)mutate(child);
+		//evaluate fitness of the child on the previous scores
+		child.reset();
+		fit = 0.0;
+		for(j=0;j<PROUNDS;j++){
+			fit += (child.run((previous[j])?1:0)==(previous[j+1])?1:0)?previous[j+1]:-previous[j+1];
+		}
+		int select = lrand48()%POPSIZE;
+		if(fitness[select]<=fit){
+			population[select]=child;
+			fitness[select]=fit;
+		}
+	}
+
+	countoff++;
+	if(countoff==PROUNDS){
+		best = 0;
+		bestfit = fitness[0];
+		for(i=1;i<POPSIZE;i++){
+			if(fitness[i]>bestfit){bestfit = fitness[i];best=i;}
+		}
+
+		inuse = population[best];
+		inuse.reset();
+
+		temp = previous;
+		previous =  current;
+		current = previous;
+		current[0]=previous[PROUNDS];
+
+		for(i=0;i<POPSIZE;i++){
+			population[i].reset();
+			fitness[i] = 0.0;
+			for(j=0;j<PROUNDS;j++){
+				fitness[i] += (population[i].run((previous[j])?1:0)==(previous[j+1])?1:0)?previous[j+1]:-previous[j+1];
+			}
+		}
+
+		countoff=0;
+	}
+	current[countoff+1]=change;
+
+	return inuse.run(change>0);
+}
+
+/*
+int main(){
+long i;
+initEP();
+inuse.printn(cout);
+for(i<0;i<10000000000;i++) predict(drand48());
+}*/
+
+/*
+int testmain(){
+int i;
+epaut test1(5);
+//epaut *test2;
+
+//test1 = new epaut(5);
+test1.printn(cout);  
+
+for(i=0;i<5;i++){
+test1.mutout();
+test1.printn(cout); 
+test1.muttrn();
+test1.printn(cout); 
+test1.mutfst();
+test1.printn(cout);  
+}
+
+for(i=0;i<5;i++){
+test1.mutdel();
+test1.printn(cout); 
+}
+for(i=0;i<5;i++){
+test1.mutadd();
+test1.printn(cout);  
+}
+
+
+}
+*/
