@@ -1,5 +1,5 @@
-# ns-3-9-ngwmn
-Modifications to ns-3.9 used for the publication of the NGWMN/BWCCA 2011 paper "[An Online Evolutionary Programming Method for the Parameters of Wireless Networks](http://ieeexplore.ieee.org/xpl/freeabs_all.jsp?arnumber=6103086)"
+# ns-3-9-ngwmn-2011
+Modifications to ns-3.9 used for the publication of the NGWMN/BWCCA 2011 paper "[An Online Evolutionary Programming Method for the Parameters of Wireless Networks](http://ieeexplore.ieee.org/xpl/freeabs_all.jsp?arnumber=6103086)". Note this is an extension of the work done from the previous year's conference simulation which can be found on github as well: https://github.com/csgrad/ns-3-9-ngwmn-2010
 
 Since it has been some time since this code has been compiled - there are few "tweaks" to get it to run correctly in modern Ubuntu (15.10) with the current g++ (4.9.2).
 
