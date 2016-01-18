@@ -1,5 +1,5 @@
 # ns-3-9-ngwmn
-Modifications to ns-3.9 used for the publication of the NGWMN/BWCCA 2010 paper "[Adaptive Mixed Bias Resource Allocation for Wireless Mesh Networks](http://www.computer.org/csdl/proceedings/bwcca/2010/4236/00/4236a622-abs.html)"
+Modifications to ns-3.9 used for the publication of the NGWMN/BWCCA 2011 paper "[An Online Evolutionary Programming Method for the Parameters of Wireless Networks](http://ieeexplore.ieee.org/xpl/freeabs_all.jsp?arnumber=6103086)"
 
 Since it has been some time since this code has been compiled - there are few "tweaks" to get it to run correctly in modern Ubuntu (15.10) with the current g++ (4.9.2).
 
